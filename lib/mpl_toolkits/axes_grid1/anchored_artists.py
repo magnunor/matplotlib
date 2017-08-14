@@ -377,10 +377,11 @@ fontproperties=fontprops)
 
 class AnchoredDirectionArrows(AnchoredOffsetbox):
     @docstring.dedent
-    def __init__(self, transform, label_x, label_y, length=0.15, fontsize=0.08, loc=2,
-                 angle=0, aspect_ratio=1, pad=0.1, borderpad=0.1,
-                 frameon=False, color='black', alpha=1, sep_x=0.01,sep_y=0, fontproperties=None,
-                 back_length=0.15, head_width=10, head_length=15, tail_width=2, 
+    def __init__(self, transform, label_x, label_y, length=0.15,
+                 fontsize=0.08, loc=2, angle=0, aspect_ratio=1, pad=0.1,
+                 borderpad=0.1, frameon=False, color='black', alpha=1,
+                 sep_x=0.01,sep_y=0, fontproperties=None, back_length=0.15,
+                 head_width=10, head_length=15, tail_width=2,
                  lw=0.5, text_props={}, arrow_props={},
                  **kwargs):
         """
@@ -391,6 +392,9 @@ class AnchoredDirectionArrows(AnchoredOffsetbox):
         transform : `matplotlib.transforms.Transform`
             The transformation object for the coordinate system in use, i.e.,
             :attr:`matplotlib.axes.Axes.transData`.
+
+        label_x, label_y : string
+            Label text for the x and y arrows
 
         length : int or float
             Length of the arrow, given in coordinates of
@@ -529,12 +533,16 @@ fontproperties=fontprops)
         self._box.add_artist(self.arrow_y)
 
         #Label X
-        text_path_x = TextPath((length_x+sep_x, back_length*length_y+sep_y), label_x, size=fontsize, prop=fontproperties, roatation=angle)
+        text_path_x = TextPath((
+            length_x+sep_x, back_length*length_y+sep_y), label_x,
+            size=fontsize, prop=fontproperties, roatation=angle)
         self.p_x = PathPatch(text_path_x, transform=t_start, **text_props)
         self._box.add_artist(self.p_x)
 
         #Label Y
-        text_path_y = TextPath((length_x*back_length+sep_x, length_y*(1-back_length)+sep_y), label_y, size=fontsize, prop=fontproperties)
+        text_path_y = TextPath((
+            length_x*back_length+sep_x, length_y*(1-back_length)+sep_y),
+            label_y, size=fontsize, prop=fontproperties)
         self.p_y = PathPatch(text_path_y, **text_props)
         self._box.add_artist(self.p_y)
 
