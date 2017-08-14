@@ -2,14 +2,14 @@ from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
 import six
 
-from matplotlib import docstring
+from matplotlib import docstring, transforms
 from matplotlib.offsetbox import (AnchoredOffsetbox, AuxTransformBox,
                                   DrawingArea, TextArea, VPacker)
-from matplotlib.patches import Rectangle, Ellipse
-
+from matplotlib.patches import Rectangle, Ellipse, ArrowStyle, FancyArrowPatch, PathPatch
+from matplotlib.text import TextPath
 
 __all__ = ['AnchoredDrawingArea', 'AnchoredAuxTransformBox',
-           'AnchoredEllipse', 'AnchoredSizeBar']
+           'AnchoredEllipse', 'AnchoredSizeBar','AnchoredDirectionArrows']
 
 
 class AnchoredDrawingArea(AnchoredOffsetbox):
@@ -374,3 +374,171 @@ fontproperties=fontprops)
                                    child=self._box,
                                    prop=fontproperties,
                                    frameon=frameon, **kwargs)
+
+class AnchoredDirectionArrows(AnchoredOffsetbox):
+    @docstring.dedent
+    def __init__(self, transform, label_x, label_y, length=0.15, fontsize=0.08, loc=2,
+                 angle=0, aspect_ratio=1, pad=0.1, borderpad=0.1,
+                 frameon=False, color='black', alpha=1, sep_x=0.01,sep_y=0, fontproperties=None,
+                 back_length=0.15, head_width=10, head_length=15, tail_width=2, 
+                 lw=0.5, text_props={}, arrow_props={},
+                 **kwargs):
+        """
+        Draw a direction indicator arrows
+
+        Parameters
+        ----------
+        transform : `matplotlib.transforms.Transform`
+            The transformation object for the coordinate system in use, i.e.,
+            :attr:`matplotlib.axes.Axes.transData`.
+
+        length : int or float
+            Length of the arrow, given in coordinates of
+            *transform*.
+
+        label : str
+            Label to display.
+
+        loc : int
+            Location of this size bar. Valid location codes are::
+
+                'upper right'  : 1,
+                'upper left'   : 2,
+                'lower left'   : 3,
+                'lower right'  : 4,
+                'right'        : 5,
+                'center left'  : 6,
+                'center right' : 7,
+                'lower center' : 8,
+                'upper center' : 9,
+                'center'       : 10
+
+        pad : int or float, optional
+            Padding around the label and size bar, in fraction of the font
+            size. Defaults to 0.1.
+
+        borderpad : int or float, optional
+            Border padding, in fraction of the font size.
+            Defaults to 0.1.
+
+        sep_x : int or float, optional
+            Separation between the arrows and labels in ???
+            Defaults to 0.01.
+
+        frameon : bool, optional
+            If True, draw a box around the horizontal bar and label.
+            Defaults to False.
+
+        color : str, optional
+            Color for the size bar and label.
+            Defaults to black.
+
+        fontproperties : `matplotlib.font_manager.FontProperties`, optional
+            Font properties for the label text.
+
+        **kwargs :
+            Keyworded arguments to pass to
+            :class:`matplotlib.offsetbox.AnchoredOffsetbox`.
+
+        Attributes
+        ----------
+        size_bar : `matplotlib.offsetbox.AuxTransformBox`
+            Container for the size bar.
+
+        txt_label : `matplotlib.offsetbox.TextArea`
+            Container for the label of the size bar.
+
+        Notes
+        -----
+        If *prop* is passed as a keyworded argument, but *fontproperties* is
+        not, then *prop* is be assumed to be the intended *fontproperties*.
+        Using both *prop* and *fontproperties* is not supported.
+
+        Examples
+        --------
+        >>> import matplotlib.pyplot as plt
+        >>> import numpy as np
+        >>> from mpl_toolkits.axes_grid1.anchored_artists import \
+AnchoredDirectionArrows
+        >>> fig, ax = plt.subplots()
+        >>> ax.imshow(np.random.random((10,10)))
+        >>> arrows = AnchoredDirectionArrows(ax.transData, 3, '3 data units', 4)
+        >>> ax.add_artist(bar)
+        >>> fig.show()
+
+        Using all the optional parameters
+
+        >>> import matplotlib.font_manager as fm
+        >>> fontprops = fm.FontProperties(size=14, family='monospace')
+        >>> bar = AnchoredSizeBar(ax.transData, 3, '3 units', 4, pad=0.5, \
+sep=5, borderpad=0.5, frameon=False, \
+size_vertical=0.5, color='white', \
+fontproperties=fontprops)
+        """
+        arrowstyle = ArrowStyle("Simple",
+                head_width=head_width, 
+                head_length=head_length, 
+                tail_width=tail_width)
+
+        if fontproperties is None and 'prop' in kwargs:
+            fontproperties = kwargs.pop('prop')
+
+        if 'color' not in arrow_props:
+            arrow_props['color'] = color
+
+        if 'alpha' not in arrow_props:
+            arrow_props['alpha'] = alpha
+
+        if 'color' not in text_props:
+            text_props['color'] = color
+            text_props['ec'] = color
+
+        if 'alpha' not in text_props:
+            text_props['alpha'] = alpha
+
+        if 'lw' not in text_props:
+            text_props['lw'] = lw
+
+        t_start = transform
+        t = transforms.Affine2D().rotate_deg(angle)
+        t_end = t_start + t
+        t_text = t_start#_end + Affine2D().rotate_deg(angle)
+
+        self._box = AuxTransformBox(t_end)
+
+        length_x = length
+        length_y = length*aspect_ratio
+
+        self.arrow_x = FancyArrowPatch(
+                (0,back_length*length_y),
+                (length_x,back_length*length_y),
+                arrowstyle=arrowstyle,
+                shrinkA=0.0,
+                shrinkB=0.0,
+                **arrow_props)
+
+        self.arrow_y = FancyArrowPatch(
+                (back_length*length_x,0),
+                (back_length*length_x,length_y),
+                arrowstyle=arrowstyle,
+                shrinkA=0.0,
+                shrinkB=0.0,
+                **arrow_props)
+
+        self._box.add_artist(self.arrow_x)
+        self._box.add_artist(self.arrow_y)
+
+        #Label X
+        text_path_x = TextPath((length_x+sep_x, back_length*length_y+sep_y), label_x, size=fontsize, prop=fontproperties, roatation=angle)
+        self.p_x = PathPatch(text_path_x, transform=t_start, **text_props)
+        self._box.add_artist(self.p_x)
+
+        #Label Y
+        text_path_y = TextPath((length_x*back_length+sep_x, length_y*(1-back_length)+sep_y), label_y, size=fontsize, prop=fontproperties)
+        self.p_y = PathPatch(text_path_y, **text_props)
+        self._box.add_artist(self.p_y)
+
+        AnchoredOffsetbox.__init__(self, loc, pad=pad, borderpad=borderpad,
+                                   child=self._box,
+                                   frameon=frameon, **kwargs)
+
