@@ -379,10 +379,10 @@ class AnchoredDirectionArrows(AnchoredOffsetbox):
     @docstring.dedent
     def __init__(self, transform, label_x, label_y, length=0.15,
                  fontsize=0.08, loc=2, angle=0, aspect_ratio=1, pad=0.1,
-                 borderpad=0.1, frameon=False, color='black', alpha=1,
+                 borderpad=0.1, frameon=False, color='w', alpha=1,
                  sep_x=0.01,sep_y=0, fontproperties=None, back_length=0.15,
                  head_width=10, head_length=15, tail_width=2,
-                 lw=0.5, text_props={}, arrow_props={},
+                 text_props=None, arrow_props=None,
                  **kwargs):
         """
         Draw a direction indicator arrows
@@ -479,6 +479,12 @@ sep=5, borderpad=0.5, frameon=False, \
 size_vertical=0.5, color='white', \
 fontproperties=fontprops)
         """
+        if arrow_props is None:
+            arrow_props = {}
+
+        if text_props is None:
+            text_props = {}
+
         arrowstyle = ArrowStyle("Simple",
                 head_width=head_width, 
                 head_length=head_length, 
@@ -486,6 +492,8 @@ fontproperties=fontprops)
 
         if fontproperties is None and 'prop' in kwargs:
             fontproperties = kwargs.pop('prop')
+
+        print(bool(arrow_props))
 
         if 'color' not in arrow_props:
             arrow_props['color'] = color
@@ -495,13 +503,9 @@ fontproperties=fontprops)
 
         if 'color' not in text_props:
             text_props['color'] = color
-            text_props['ec'] = color
 
         if 'alpha' not in text_props:
             text_props['alpha'] = alpha
-
-        if 'lw' not in text_props:
-            text_props['lw'] = lw
 
         t_start = transform
         t = transforms.Affine2D().rotate_deg(angle)
@@ -513,29 +517,51 @@ fontproperties=fontprops)
         length_x = length
         length_y = length*aspect_ratio
 
-        self.arrow_x = FancyArrowPatch(
+        self.arrow_x_face = FancyArrowPatch(
                 (0,back_length*length_y),
                 (length_x,back_length*length_y),
                 arrowstyle=arrowstyle,
                 shrinkA=0.0,
                 shrinkB=0.0,
                 **arrow_props)
+        self.arrow_x_face.set_ec('None')
 
-        self.arrow_y = FancyArrowPatch(
+        self.arrow_x_edge = FancyArrowPatch(
+                (0,back_length*length_y),
+                (length_x,back_length*length_y),
+                arrowstyle=arrowstyle,
+                shrinkA=0.0,
+                shrinkB=0.0,
+                **arrow_props)
+        self.arrow_x_edge.set_fc('None')
+
+        self.arrow_y_face = FancyArrowPatch(
                 (back_length*length_x,0),
                 (back_length*length_x,length_y),
                 arrowstyle=arrowstyle,
                 shrinkA=0.0,
                 shrinkB=0.0,
                 **arrow_props)
+        self.arrow_y_face.set_ec('None')
 
-        self._box.add_artist(self.arrow_x)
-        self._box.add_artist(self.arrow_y)
+        self.arrow_y_edge = FancyArrowPatch(
+                (back_length*length_x,0),
+                (back_length*length_x,length_y),
+                arrowstyle=arrowstyle,
+                shrinkA=0.0,
+                shrinkB=0.0,
+                **arrow_props)
+        self.arrow_y_edge.set_fc('None')
+
+        self._box.add_artist(self.arrow_x_edge)
+        self._box.add_artist(self.arrow_y_edge)        
+        self._box.add_artist(self.arrow_x_face)
+        self._box.add_artist(self.arrow_y_face)
 
         #Label X
         text_path_x = TextPath((
             length_x+sep_x, back_length*length_y+sep_y), label_x,
-            size=fontsize, prop=fontproperties, roatation=angle)
+            size=fontsize, prop=fontproperties)
         self.p_x = PathPatch(text_path_x, transform=t_start, **text_props)
         self._box.add_artist(self.p_x)
 
