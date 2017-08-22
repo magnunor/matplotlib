@@ -11,7 +11,8 @@ from mpl_toolkits.axes_grid1 import host_subplot
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from mpl_toolkits.axes_grid1 import AxesGrid
 from mpl_toolkits.axes_grid1.inset_locator import zoomed_inset_axes, mark_inset
-from mpl_toolkits.axes_grid1.anchored_artists import AnchoredSizeBar
+from mpl_toolkits.axes_grid1.anchored_artists import (AnchoredSizeBar,
+                                            AnchoredDirectionArrows)
 
 from matplotlib.colors import LogNorm
 from itertools import product
@@ -172,11 +173,12 @@ def test_zooming_with_inverted_axes():
     inset_ax = zoomed_inset_axes(ax, zoom=2.5, loc=4)
     inset_ax.axis([1.4, 1.1, 1.4, 1.1])
 
+
 @image_comparison(baseline_images=['anchored_direction_arrows'],
                   extensions=['png'])
 def test_anchored_direction_arrows():
     fig, ax = plt.subplots()
-    ax.imshow(np.zeros((10,10)))
+    ax.imshow(np.zeros((10, 10)))
 
-    simple_arrow = AnchoredDirectionArrows(ax.transAxes, 'X','Y')
+    simple_arrow = AnchoredDirectionArrows(ax.transAxes, 'X', 'Y')
     ax.add_artist(simple_arrow)
