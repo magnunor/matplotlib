@@ -4,10 +4,10 @@ from mpl_toolkits.axes_grid1.anchored_artists import AnchoredDirectionArrows
 import matplotlib.font_manager as fm
 
 fig, ax = plt.subplots()
-ax.imshow(np.random.random((10,10)))
+ax.imshow(np.random.random((10, 10)))
 
 # Simple example
-simple_arrow = AnchoredDirectionArrows(ax.transAxes, 'X','Y')
+simple_arrow = AnchoredDirectionArrows(ax.transAxes, 'X', 'Y')
 ax.add_artist(simple_arrow)
 
 # High contrast arrow
@@ -15,7 +15,8 @@ high_contrast_part_1 = AnchoredDirectionArrows(
                             ax.transAxes,
                             '111', r'11$\overline{2}$',
                             loc=1,
-                            arrow_props={'ec':'w','fc':'none','alpha':1,'lw':2}
+                            arrow_props={'ec': 'w', 'fc': 'none', 'alpha': 1,
+                                         'lw': 2}
                             )
 ax.add_artist(high_contrast_part_1)
 
@@ -23,8 +24,8 @@ high_contrast_part_2 = AnchoredDirectionArrows(
                             ax.transAxes,
                             '111', r'11$\overline{2}$',
                             loc=1,
-                            arrow_props={'ec':'none','fc':'k'},
-                            text_props={'ec':'w','fc':'k','lw':0.4}
+                            arrow_props={'ec': 'none', 'fc': 'k'},
+                            text_props={'ec': 'w', 'fc': 'k', 'lw': 0.4}
                             )
 ax.add_artist(high_contrast_part_2)
 
@@ -46,7 +47,7 @@ a1 = AnchoredDirectionArrows(
         ax.transAxes, 'A', 'B', loc='lower center',
         length=-0.15,
         sep_x=0.03, sep_y=0.03,
-        color = 'r'
+        color='r'
     )
 ax.add_artist(a1)
 

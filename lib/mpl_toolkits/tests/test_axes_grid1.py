@@ -12,7 +12,7 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 from mpl_toolkits.axes_grid1 import AxesGrid
 from mpl_toolkits.axes_grid1.inset_locator import zoomed_inset_axes, mark_inset
 from mpl_toolkits.axes_grid1.anchored_artists import (AnchoredSizeBar,
-                                            AnchoredDirectionArrows)
+                                                      AnchoredDirectionArrows)
 
 from matplotlib.colors import LogNorm
 from itertools import product
