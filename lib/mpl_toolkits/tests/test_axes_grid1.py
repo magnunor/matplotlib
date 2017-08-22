@@ -171,3 +171,12 @@ def test_zooming_with_inverted_axes():
     ax.axis([3, 1, 3, 1])
     inset_ax = zoomed_inset_axes(ax, zoom=2.5, loc=4)
     inset_ax.axis([1.4, 1.1, 1.4, 1.1])
+
+@image_comparison(baseline_images=['anchored_direction_arrows'],
+                  extensions=['png'])
+def test_anchored_direction_arrows():
+    fig, ax = plt.subplots()
+    ax.imshow(np.zeros((10,10)))
+
+    simple_arrow = AnchoredDirectionArrows(ax.transAxes, 'X','Y')
+    ax.add_artist(simple_arrow)
