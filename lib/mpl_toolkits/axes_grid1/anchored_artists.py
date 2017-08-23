@@ -387,7 +387,7 @@ class AnchoredDirectionArrows(AnchoredOffsetbox):
                  text_props=None, arrow_props=None,
                  **kwargs):
         """
-        Draw a direction indicator arrows
+        Draw two perpendicular arrows to indicate directions.
 
         Parameters
         ----------
@@ -408,7 +408,7 @@ class AnchoredDirectionArrows(AnchoredOffsetbox):
             Defaults to 0.08.
 
         loc : int, optional
-            Location of this size bar. Valid location codes are::
+            Location of the direction arrows. Valid location codes are::
 
                 'upper right'  : 1,
                 'upper left'   : 2,
@@ -433,7 +433,7 @@ class AnchoredDirectionArrows(AnchoredOffsetbox):
             Defaults to 1.
 
         pad : int or float, optional
-            Padding around the label and size bar, in fraction of the font
+            Padding around the labels and arrows, in fraction of the font
             size. Defaults to 0.4.
 
         borderpad : int or float, optional
@@ -441,11 +441,11 @@ class AnchoredDirectionArrows(AnchoredOffsetbox):
             Defaults to 0.4.
 
         frameon : bool, optional
-            If True, draw a box around the horizontal bar and label.
+            If True, draw a box around the arrows and labels.
             Defaults to False.
 
         color : str, optional
-            Color for the size bar and label.
+            Color for the arrows and labels.
             Defaults to white.
 
         alpha : int or float, optional
@@ -464,15 +464,15 @@ class AnchoredDirectionArrows(AnchoredOffsetbox):
             Defaults to 0.15.
 
         head_width : int or float, optional
-            Width of arrow head, sendt to ArrowStyle.
+            Width of arrow head, sent to ArrowStyle.
             Defaults to 10.
 
         head_length : int or float, optional
-            Length of arrow head, sendt to ArrowStyle.
+            Length of arrow head, sent to ArrowStyle.
             Defaults to 15.
 
         tail_width : int or float, optional
-            Width of arrow tail, sendt to ArrowStyle.
+            Width of arrow tail, sent to ArrowStyle.
             Defaults to 2.
 
         text_props, arrow_props : dict
@@ -500,7 +500,7 @@ class AnchoredDirectionArrows(AnchoredOffsetbox):
 
         Notes
         -----
-        If *prop* is passed as a keyworded argument, but *fontproperties* is
+        If *prop* is passed as a keyword argument, but *fontproperties* is
         not, then *prop* is be assumed to be the intended *fontproperties*.
         Using both *prop* and *fontproperties* is not supported.
 
