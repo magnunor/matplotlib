@@ -393,7 +393,7 @@ class AnchoredDirectionArrows(AnchoredOffsetbox):
         ----------
         transform : `matplotlib.transforms.Transform`
             The transformation object for the coordinate system in use, i.e.,
-            :attr:`matplotlib.axes.Axes.transData`.
+            :attr:`matplotlib.axes.Axes.transAxes`.
 
         label_x, label_y : string
             Label text for the x and y arrows
