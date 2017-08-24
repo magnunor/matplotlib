@@ -495,7 +495,7 @@ class AnchoredDirectionArrows(AnchoredOffsetbox):
         p_x, p_y : `matplotlib.patches.PathPatch`
             Patch for arrow labels
 
-        _box : `matplotlib.offsetbox.AuxTransformBox`
+        box : `matplotlib.offsetbox.AuxTransformBox`
             Container for the arrows and labels.
 
         Notes
@@ -555,7 +555,7 @@ text_props={'ec':'w','fc':'k'}, fontproperties=fontprops)
         t_start = transform
         t_end = t_start + transforms.Affine2D().rotate_deg(angle)
 
-        self._box = AuxTransformBox(t_end)
+        self.box = AuxTransformBox(t_end)
 
         length_x = length
         length_y = length*aspect_ratio
@@ -576,8 +576,8 @@ text_props={'ec':'w','fc':'k'}, fontproperties=fontprops)
                 shrinkB=0.0,
                 **arrow_props)
 
-        self._box.add_artist(self.arrow_x)
-        self._box.add_artist(self.arrow_y)
+        self.box.add_artist(self.arrow_x)
+        self.box.add_artist(self.arrow_y)
 
         text_path_x = TextPath((
             length_x+sep_x, back_length*length_y+sep_y), label_x,
@@ -592,5 +592,5 @@ text_props={'ec':'w','fc':'k'}, fontproperties=fontprops)
         self._box.add_artist(self.p_y)
 
         AnchoredOffsetbox.__init__(self, loc, pad=pad, borderpad=borderpad,
-                                   child=self._box,
+                                   child=self.box,
                                    frameon=frameon, **kwargs)
