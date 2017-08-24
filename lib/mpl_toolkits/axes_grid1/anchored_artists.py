@@ -583,13 +583,13 @@ text_props={'ec':'w','fc':'k'}, fontproperties=fontprops)
             length_x+sep_x, back_length*length_y+sep_y), label_x,
             size=fontsize, prop=fontproperties)
         self.p_x = PathPatch(text_path_x, transform=t_start, **text_props)
-        self._box.add_artist(self.p_x)
+        self.box.add_artist(self.p_x)
 
         text_path_y = TextPath((
             length_x*back_length+sep_x, length_y*(1-back_length)+sep_y),
             label_y, size=fontsize, prop=fontproperties)
         self.p_y = PathPatch(text_path_y, **text_props)
-        self._box.add_artist(self.p_y)
+        self.box.add_artist(self.p_y)
 
         AnchoredOffsetbox.__init__(self, loc, pad=pad, borderpad=borderpad,
                                    child=self.box,
