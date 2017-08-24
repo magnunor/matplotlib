@@ -1,7 +1,7 @@
 """
-=================
+=============================
 Demo Anchored Direction Arrow
-=================
+=============================
 
 """
 import matplotlib.pyplot as plt
