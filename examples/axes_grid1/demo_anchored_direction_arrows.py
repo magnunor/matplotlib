@@ -1,3 +1,9 @@
+"""
+=================
+Demo Anchored Direction Arrow
+=================
+
+"""
 import matplotlib.pyplot as plt
 import numpy as np
 from mpl_toolkits.axes_grid1.anchored_artists import AnchoredDirectionArrows
