@@ -476,8 +476,8 @@ class AnchoredDirectionArrows(AnchoredOffsetbox):
             Defaults to 2.
 
         text_props, arrow_props : dict
-            Properties of the text and arrows, passed to :class:
-            `matplotlib.text.TextPath` and
+            Properties of the text and arrows, passed to
+            :class:`matplotlib.text.TextPath` and
             `matplotlib.patches.FancyArrowPatch`
 
         **kwargs :
@@ -509,11 +509,10 @@ class AnchoredDirectionArrows(AnchoredOffsetbox):
         >>> import matplotlib.pyplot as plt
         >>> import numpy as np
         >>> from mpl_toolkits.axes_grid1.anchored_artists import \
-AnchoredDirectionArrows
+        ...     AnchoredDirectionArrows
         >>> fig, ax = plt.subplots()
         >>> ax.imshow(np.random.random((10,10)))
-        >>> arrows = AnchoredDirectionArrows(ax.transAxes, '111', \
-r'11$\overline{2}$')
+        >>> arrows = AnchoredDirectionArrows(ax.transAxes, '111', '110')
         >>> ax.add_artist(arrows)
         >>> fig.show()
 
@@ -522,9 +521,10 @@ r'11$\overline{2}$')
 
         >>> import matplotlib.font_manager as fm
         >>> fontprops = fm.FontProperties(family='monospace')
-        >>> arrows = AnchoredDirectionArrows(ax.transAxes,'East','South', \
-loc='lower left', color='k', aspect_ratio=-1, sep_x=0.02,sep_y=-0.01, \
-text_props={'ec':'w','fc':'k'}, fontproperties=fontprops)
+        >>> arrows = AnchoredDirectionArrows(ax.transAxes, 'East', 'South',
+        ... loc='lower left', color='k', aspect_ratio=-1, sep_x=0.02,
+        ... sep_y=-0.01, text_props={'ec':'w', 'fc':'k'},
+        ... fontproperties=fontprops)
         """
         if arrow_props is None:
             arrow_props = {}
